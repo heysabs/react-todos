@@ -4,11 +4,11 @@ import TodosList from './todos-list';
 
 const todos = [
   {
-    task: 'make React tutorial',
+    task: 'Do React tutorial',
     isCompleted: false
   },
   {
-    task: 'eat dinner',
+    task: 'Bake a cake',
     isCompleted: true
   }
 ];
@@ -24,12 +24,13 @@ export default class App extends React.Component {
   render() {
     return (
       <div>
-        <h1>React ToDos App</h1>
-        <CreateTodo createTask={this.createTask.bind(this)} />
+        <h1>Do It Do It!</h1>
+        <CreateTodo todos={this.state.todos} createTask={this.createTask.bind(this)} />
         <TodosList
               todos={this.state.todos}
               toggleTask={this.toggleTask.bind(this)}
               saveTask={this.saveTask.bind(this)}
+              deleteTask={this.deleteTask.bind(this)}
                />
       </div>
     );
@@ -52,5 +53,10 @@ export default class App extends React.Component {
     const foundTodo = _.find(this.state.todos, todo => todo.task === oldTask);
     foundTodo.task = newTask;
     this.setState({ todos: this.state.todos })
+  }
+
+  deleteTask(taskToDelete) {
+    _.remove(this.state.todos, todo => todo.task === taskToDelete);
+    this.setState({ todos: this.state.todos});
   }
 }

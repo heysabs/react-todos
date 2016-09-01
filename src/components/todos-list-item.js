@@ -12,7 +12,7 @@ export default class TodosListItem extends React.Component {
     console.log(this.props)
 
     const taskStyle = {
-      color: isCompleted ? 'green' : 'red',
+      color: isCompleted ? 'green' : 'black',
       cursor: 'pointer'
     };
 
@@ -38,15 +38,15 @@ export default class TodosListItem extends React.Component {
     if (this.state.isEditing) {
       return (
         <td>
-          <button onClick={this.onSaveClick.bind(this)}>Save</button>
-          <button onClick={this.onCancelClick.bind(this)}>Cancel</button>
+          <button class="btn btn-success" onClick={this.onSaveClick.bind(this)}>Save</button>
+          <button class="btn btn-danger" onClick={this.onCancelClick.bind(this)}>Cancel</button>
         </td>
       );
     }
     return (
       <td>
-        <button onClick={this.onEditClick.bind(this)}>Edit</button>
-        <button>Delete</button>
+        <button class="btn btn-info" onClick={this.onEditClick.bind(this)}>Edit</button>
+        <button class="btn btn-danger" onClick={this.props.deleteTask.bind(this, this.props.task)}>Delete</button>
       </td>
     )
   }
