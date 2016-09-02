@@ -24,7 +24,7 @@ export default class App extends React.Component {
   render() {
     return (
       <div>
-        <h1>Do It Do It!</h1>
+        <img src="http://ih0.redbubble.net/image.93571148.9110/flat,800x800,075,f.jpg" height="300" />
         <CreateTodo todos={this.state.todos} createTask={this.createTask.bind(this)} />
         <TodosList
               todos={this.state.todos}
