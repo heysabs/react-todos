@@ -1,6 +1,16 @@
 import React from 'react';
 import CreateTodo from './create-todo';
 import TodosList from './todos-list';
+import * as firebase from 'firebase';
+
+// Initialize Firebase
+var config = {
+  apiKey: "AIzaSyBjZnwAk1ThpwG5D2qtwsWmYhTGb8vsupg",
+  authDomain: "justdoit-47d64.firebaseapp.com",
+  databaseURL: "https://justdoit-47d64.firebaseio.com",
+  storageBucket: "justdoit-47d64.appspot.com",
+};
+firebase.initializeApp(config);
 
 const todos = [
   {
@@ -14,6 +24,22 @@ const todos = [
 ];
 
 export default class App extends React.Component {
+  componentWillMount() {
+    this.firebaseRef = firebase.database().ref().child('todo');
+    this.firebaseRef.on('child_added', snap => {
+      this.state.todos.push({
+        index: snap.key,
+        task: snap.val().task,
+        isCompleted: snap.val().isCompleted
+      });
+      this.setState({ todos: this.state.todos });
+    });
+  }
+
+  componentWillUnmount() {
+    this.firebaseRef.off();
+  }
+
   constructor(props) {
     super(props);
 
@@ -42,7 +68,7 @@ export default class App extends React.Component {
   }
 
   createTask(task){
-    this.state.todos.push({
+    this.firebaseRef.push({
       task,
       isCompleted: false
     });
@@ -55,7 +81,9 @@ export default class App extends React.Component {
     this.setState({ todos: this.state.todos })
   }
 
-  deleteTask(taskToDelete) {
+  deleteTask(taskToDelete, indexToDelete) {
+    console.log(taskToDelete);
+    firebase.database().ref('todo/' + indexToDelete). remove();
     _.remove(this.state.todos, todo => todo.task === taskToDelete);
     this.setState({ todos: this.state.todos});
   }
